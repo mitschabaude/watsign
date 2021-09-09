@@ -15,7 +15,7 @@ export default async function printPerformance(
   let publicKey = await toBytes(fromUrl(identity.publicKey));
   let longMessage = await createBytesToSign(identity.info);
   let shortMessage = await createBytesToSign({});
-  console.log('First run after startup (varies between runs!):');
+  console.log('First run after page load (varies between runs!):');
   {
     let start = performance.now();
     let signature = await signDetached(shortMessage, secretKey);
