@@ -70,6 +70,29 @@
   resolved "https://registry.npmjs.org/@webassemblyjs/helper-wasm-bytecode/-/helper-wasm-bytecode-1.11.1.tgz"
   integrity sha512-PvpoOGiJwXeTrSf/qfudJhwlvDQxFgelbMqtq52WWiXC6Xgg1IREdngmPN3bs4RoO83PnL/nFrxucXj1+BX62Q==
 
+"@webassemblyjs/helper-wasm-bytecode@file:../../.cache/yarn/v6/npm-esbuild-plugin-wat-0.2.5-integrity/node_modules/esbuild-plugin-wat/.yalc/@webassemblyjs/ast/.yalc/@webassemblyjs/helper-wasm-bytecode":
+  version "1.11.1"
+
+"@webassemblyjs/helper-wasm-bytecode@file:../../.cache/yarn/v6/npm-esbuild-plugin-wat-0.2.5-integrity/node_modules/esbuild-plugin-wat/.yalc/@webassemblyjs/wasm-parser/.yalc/@webassemblyjs/helper-wasm-bytecode":
+  version "1.11.1"
+
+"@webassemblyjs/ieee754@1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@webassemblyjs/ieee754/-/ieee754-1.11.1.tgz#963929e9bbd05709e7e12243a099180812992614"
+  integrity sha512-hJ87QIPtAMKbFq6CGTkZYJivEwZDbQUgYd3qKSadTNOhVY7p+gfP6Sr0lLRVTaG1JjFj+r3YchoqRYxNH3M0GQ==
+  dependencies:
+    "@xtuc/ieee754" "^1.2.0"
+
+"@webassemblyjs/leb128@file:../../.cache/yarn/v6/npm-esbuild-plugin-wat-0.2.5-integrity/node_modules/esbuild-plugin-wat/.yalc/@webassemblyjs/wasm-parser/.yalc/@webassemblyjs/leb128":
+  version "1.11.1"
+  dependencies:
+    "@xtuc/long" "4.2.2"
+
+"@webassemblyjs/utf8@1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@webassemblyjs/utf8/-/utf8-1.11.1.tgz#d1f8b764369e7c6e6bae350e854dec9a59f0a3ff"
+  integrity sha512-9kqcxAEdMhiwQkHpkNiorZzqpGrodQQ2IGrHHxCy+Ozng0ofyMA0lTqiLkVs1uzTRejX+/O0EOT7KxqVPuXosQ==
+
 "@webassemblyjs/wasm-parser@link:../../.cache/yarn/v6/npm-esbuild-plugin-wat-0.2.5-integrity/node_modules/esbuild-plugin-wat/.yalc/@webassemblyjs/wasm-parser":
   version "0.0.0"
   uid ""
@@ -97,6 +120,11 @@
 "@webassemblyjs/wast-printer@link:../../.cache/yarn/v6/npm-esbuild-plugin-wat-0.2.5-integrity/node_modules/esbuild-plugin-wat/.yalc/@webassemblyjs/wast-printer":
   version "0.0.0"
   uid ""
+
+"@xtuc/ieee754@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
+  integrity sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==
 
 "@xtuc/long@4.2.2":
   version "4.2.2"

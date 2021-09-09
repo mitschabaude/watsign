@@ -84,13 +84,18 @@ async function sign(msg, secretKey) {
 
   // compute nonce r = hash(hash(secret)[32:], msg) mod L
   // and curve point R = r * B
-  let nonce = await hashNative(concat(nonceSeed, msg));
+  let toBeHashed = new Uint8Array(64 + msg.byteLength);
+  toBeHashed.set(nonceSeed, 32);
+  toBeHashed.set(msg, 64);
+  let nonce = await hashNative(toBeHashed.subarray(32));
   nonce = await reduce(nonce); // r
   let noncePoint = await scalarbasePack(nonce); // R
 
   // H = hash(R, A, msg)
   // sig = S = (r + H*a) mod L
-  let bigHash = await hashNative(concat(noncePoint, publicKey, msg)); // H
+  toBeHashed.set(noncePoint);
+  toBeHashed.set(publicKey, 32);
+  let bigHash = await hashNative(toBeHashed); // H
   let sig = await signPt2(nonce, secretScalar, bigHash); // S
   // return [R, S]
   return concat(noncePoint, sig);
