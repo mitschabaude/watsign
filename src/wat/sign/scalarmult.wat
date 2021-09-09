@@ -1,4 +1,5 @@
 (module
+  ;; (import "../log.wat" "log_vec16" (func $log_vec16))
   (import "../../../node_modules/esbuild-plugin-wat/lib/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
 
 	(import "../math25519.wat" "set" (func $set25519 (param i32 i32)))

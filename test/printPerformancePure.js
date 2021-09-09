@@ -10,12 +10,16 @@ export default async function printPerformance(
   signKeyPairFromSeed
 ) {
   console.log(name);
+  let console_log = console.log;
+  let console_error = console.error;
+  console.log = () => {};
+  console.error = () => {};
 
   let secretKey = await toBytes(fromUrl(identity.secretKey));
   let publicKey = await toBytes(fromUrl(identity.publicKey));
   let longMessage = await createBytesToSign(identity.info);
   let shortMessage = await createBytesToSign({});
-  console.log('First run after page load (varies between runs!):');
+  console_log('First run after page load (varies between runs!):');
   {
     let start = performance.now();
     let signature = await signDetached(shortMessage, secretKey);
@@ -24,8 +28,8 @@ export default async function printPerformance(
     await signDetachedVerify(shortMessage, signature, publicKey);
     let verifyTime = performance.now() - start;
 
-    console.log(`sign (short msg):   ${signTime.toFixed(2)} ms`);
-    console.log(`verify (short msg): ${verifyTime.toFixed(2)} ms`);
+    console_log(`sign (short msg):   ${signTime.toFixed(2)} ms`);
+    console_log(`verify (short msg): ${verifyTime.toFixed(2)} ms`);
   }
   {
     let start = performance.now();
@@ -35,16 +39,12 @@ export default async function printPerformance(
     await signDetachedVerify(longMessage, signature, publicKey);
     let verifyTime = performance.now() - start;
 
-    console.log(`sign (long msg):    ${signTime.toFixed(2)} ms`);
-    console.log(`verify (long msg):  ${verifyTime.toFixed(2)} ms`);
+    console_log(`sign (long msg):    ${signTime.toFixed(2)} ms`);
+    console_log(`verify (long msg):  ${verifyTime.toFixed(2)} ms`);
   }
-  console.log('');
-
-  let n = 50;
-  let signLongTimes = Array(n);
-  let verifyLongTimes = Array(n);
-  let signShortTimes = Array(n);
-  let verifyShortTimes = Array(n);
+  console_log('');
+  console.log = console_log;
+  console.error = console_error;
 
   if (signKeyPairFromSeed) {
     let seed = (await toBytes(fromUrl(identity.secretKey))).subarray(0, 32);
@@ -54,9 +54,12 @@ export default async function printPerformance(
     }
   }
 
+  let n = 50;
+  let signLongTimes = Array(n);
+  let verifyLongTimes = Array(n);
+  let signShortTimes = Array(n);
+  let verifyShortTimes = Array(n);
   console.log('Average of 50x after warm-up of 50x:');
-  let console_log = console.log;
-  let console_error = console.error;
   console.log = () => {};
   console.error = () => {};
   let time;
@@ -72,7 +75,7 @@ export default async function printPerformance(
       if (i >= n) verifyShortTimes[i - n] = time;
     }
 
-    if (i === n - 1) {
+    if (i === 2 * n - 1) {
       console.log = console_log;
       console.error = console_error;
     }
