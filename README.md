@@ -1,8 +1,29 @@
-# fast-ed25519
+# watnacl-sign
 
-This is the signing part of a port of [tweetnacl](http://tweetnacl.cr.yp.to/) to WebAssembly. It is designed to run on the Web as well as in node and deno.
+This is the signing part of a port of [tweetnacl](http://tweetnacl.cr.yp.to/) to WebAssembly.
+It is designed to run on the Web as well as in node and deno. (TODO: currently not working in node/deno because of some minor incompatibilities)
 
 The code is based on and tested against [tweetnacl.js](https://github.com/dchest/tweetnacl-js).
+
+```sh
+npm i watnacl-sign
+```
+
+## Usage
+
+```js
+import {naclSignKeyPair, naclSign, naclSignVerify} from '../src/nacl-sign.js';
+
+let {publicKey, secretKey} = await naclSignKeyPair();
+
+let message = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]);
+
+let signature = await naclSign(message, secretKey);
+
+let ok = await naclSignVerify(message, signature, publicKey);
+
+console.log('ok', ok);
+```
 
 **Documentation is coming soon**
 

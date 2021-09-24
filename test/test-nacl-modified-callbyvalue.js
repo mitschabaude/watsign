@@ -2,7 +2,7 @@ import {
   naclSignVerify,
   naclSign,
   naclSignKeyPairFromSeed,
-} from '../src/nacl-sign-callbyvalue.js';
+} from '../src-experiments/nacl-sign-callbyvalue.js';
 import printPerformancePure from './printPerformancePure.js';
 
 async function main() {

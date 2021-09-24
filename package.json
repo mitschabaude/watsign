@@ -1,9 +1,37 @@
 {
-  "name": "fast-ed25519",
+  "name": "watnacl-sign",
+  "description": "Tweetnacl's ed25519 signatures, ported to WebAssembly for speed in the browser",
   "version": "0.1.0",
   "type": "module",
-  "main": "src/index.js",
   "license": "MIT",
+  "author": "Gregor Mitscha-Baude <gregor.mitscha-baude@gmx.at>",
+  "homepage": "https://github.com/mitschabaude/watnacl-sign",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mitschabaude/watnacl-sign"
+  },
+  "keywords": [
+    "webassembly",
+    "ed25519",
+    "eddsa",
+    "cryptography",
+    "signatures"
+  ],
+  "main": "src/nacl-sign.js",
+  "exports": {
+    ".": "./src/nacl-sign.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "npx watever ./src/wat/sign.wat",
+    "prepublishOnly": "yarn build",
+    "test": "yarn build && npx chrode test/test-nacl-modified.js"
+  },
+  "dependencies": {
+    "watever": "^0.1.0"
+  },
   "devDependencies": {
     "chrode": "^0.3.2",
     "compact-base64": "^2.1.2",
@@ -13,7 +41,6 @@
     "tweetnacl": "^1.0.3",
     "tweetnacl-util": "^0.15.1",
     "typescript": "^4.3.5",
-    "wabt": "^1.0.23",
-    "watever": "^0.1.0"
+    "wabt": "^1.0.23"
   }
 }
