@@ -1,14 +1,14 @@
 {
-  "name": "watnacl-sign",
+  "name": "watsign",
   "description": "Tweetnacl's ed25519 signatures, ported to WebAssembly for speed in the browser",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
   "author": "Gregor Mitscha-Baude <gregor.mitscha-baude@gmx.at>",
-  "homepage": "https://github.com/mitschabaude/watnacl-sign",
+  "homepage": "https://github.com/mitschabaude/watsign",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mitschabaude/watnacl-sign"
+    "url": "https://github.com/mitschabaude/watsign"
   },
   "keywords": [
     "webassembly",

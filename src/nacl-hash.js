@@ -1,13 +1,12 @@
 export {hashNative};
 
-// TODO get running in node without runtime checks
+// TODO get running in node without runtime checks, probably by a branching build step
+
 async function hashNative(msg) {
-  if (typeof crypto === 'undefined') {
-    // let crypto = await import('node:crypto');
-    // let hash = new Uint8Array(crypto.createHash('sha512').update(msg).digest());
-    // // console.log(hash);
-    // return hash;
-  } else {
-    return new Uint8Array(await crypto.subtle.digest('SHA-512', msg));
-  }
+  return new Uint8Array(await crypto.subtle.digest('SHA-512', msg));
 }
+
+// async function hashNativeNode(msg) {
+//   let crypto = await import('node:crypto');
+//   return new Uint8Array(crypto.createHash('sha512').update(msg).digest());
+// }

@@ -4,39 +4,22 @@
 //
 // Implementation derived from TweetNaCl version 20140427.
 // See for details: http://tweetnacl.cr.yp.to/
-export {
-  naclRandomBytes,
-  randombytes,
-  checkArrayTypes,
-  cleanup,
-  crypto_verify_32,
-};
+export {naclRandomBytes, randomBytes, checkArrayTypes};
 
 function naclRandomBytes(n) {
   let b = new Uint8Array(n);
-  randombytes(b, n);
+  randomBytes(b, n);
   return b;
 }
 
 let QUOTA = 65536;
-function randombytes(x, n) {
+function randomBytes(x, n) {
   let v = new Uint8Array(n);
   for (let i = 0; i < n; i += QUOTA) {
     crypto.getRandomValues(v.subarray(i, i + Math.min(n - i, QUOTA)));
   }
   for (let i = 0; i < n; i++) x[i] = v[i];
   cleanup(v);
-}
-
-// constant-time comparison of two integer arrays
-function crypto_verify_32(x, xi, y, yi) {
-  return vn(x, xi, y, yi, 32);
-}
-
-function vn(x, xi, y, yi, n) {
-  let d = 0;
-  for (let i = 0; i < n; i++) d |= x[xi + i] ^ y[yi + i];
-  return (1 & ((d - 1) >>> 8)) - 1;
 }
 
 function checkArrayTypes() {
