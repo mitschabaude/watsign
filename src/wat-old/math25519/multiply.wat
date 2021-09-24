@@ -1,9 +1,9 @@
 (module
 	;; these functions operate on 16 x i64 vectors representing integers mod (2^255 - 19)
   ;; elements are the coefficients of 2^0, ..., 2^15
-	(import "js" "console.log" (func $log (param i64)))
-	(import "js" "console.log" (func $log4 (param i64 i64 i64 i64)))
-	(import "js" "console.log" (func $log16 (param i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64)))
+	(import "window" "console.log" (func $log (param i64)))
+	(import "window" "console.log" (func $log4 (param i64 i64 i64 i64)))
+	(import "window" "console.log" (func $log16 (param i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64)))
 	(import "../bytes_utils.wat" "alloc_zero" (func $alloc_zero (param i32) (result i32)))
 
 	(export "multiply" (func $mul25519))

@@ -6,9 +6,9 @@
 ;; the remaining functions operate on one or more Int64Array(16)
 
 (module
-	(import "js" "console.log" (func $log (param i32)))
+	(import "window" "console.log" (func $log (param i32)))
 	(import "./bytes_utils.wat" "alloc_zero" (func $alloc_zero (param i32) (result i32)))
-	(import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
+	(import "../../node_modules/esbuild-plugin-wat/lib/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
 
 	(import "./math25519/add.wat" "add" (func $add (param i32 i32 i32)))
 	(import "./math25519/add.wat" "subtract" (func $subtract (param i32 i32 i32)))

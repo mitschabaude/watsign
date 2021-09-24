@@ -1,5 +1,5 @@
 (module
-  (import "js" "console.log" (func $log16 (param i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64)))
+  (import "window" "console.log" (func $log16 (param i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64 i64)))
   (global $has_logs (mut i32) (i32.const 3))
   
   (func $log_vec16 (export "log_vec16")

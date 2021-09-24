@@ -1,4 +1,4 @@
-import identity from './identity.json';
+import identity from './identity.js';
 import {toBytes} from 'fast-base64';
 import {fromUrl} from 'fast-base64/url';
 

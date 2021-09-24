@@ -1,8 +1,8 @@
 (module
-	(import "js" "console.log" (func $log (param i32)))
-	(import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
-	(import "watever/glue.wat" "lift_bytes" (func $return_bytes (param i32) (param i32) (result i32)))
-	(import "watever/glue.wat" "lift_bool" (func $return_bool (param i32) (result i32)))
+	(import "window" "console.log" (func $log (param i32)))
+	(import "../../node_modules/esbuild-plugin-wat/lib/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
+	(import "../../node_modules/esbuild-plugin-wat/lib/return.wat" "return_bytes" (func $return_bytes (param i32) (param i32) (result i32)))
+	(import "../../node_modules/esbuild-plugin-wat/lib/return.wat" "return_bool" (func $return_bool (param i32) (result i32)))
 
 	(import "./sign/scalarmult.wat" "scalarbase" (func $scalarbase (param i32 i32)))
 	(import "./sign/scalarmult.wat" "scalarmult" (func $scalarmult (param i32 i32 i32)))
@@ -18,14 +18,14 @@
 	(import "./bytes_utils.wat" "zero" (func $zero (param i32 i32)))
 	(import "./bytes_utils.wat" "i8_to_i64" (func $i8_to_i64 (param i32 i32 i32)))
 
-	(export "scalarbasePack#lift" (func $scalarbasePack))
-	(export "signPt2#lift" (func $signPt2))
-	(export "reduce#lift" (func $reduce))
-	(export "signVerifyFromHash#lift" (func $signVerifyFromHash))
-	(export "signPublicKeyFromHash#lift" (func $signPublicKeyFromHash))
+	(export "scalarbasePack" (func $scalarbasePack))
+	(export "signPt2" (func $signPt2))
+	(export "reduce" (func $reduce))
+	(export "signVerifyFromHash" (func $signVerifyFromHash))
+	(export "signPublicKeyFromHash" (func $signPublicKeyFromHash))
 
 	(func $signPublicKeyFromHash
-		(param $secret_scalar i32) ;; 32 x i8
+		(param $secret_scalar i32) (param $__ i32) ;; 32 x i8
 		(result i32)
 		(local $pk i32) (local $p i32)
 
@@ -67,10 +67,10 @@
 	)
 
 	(func $signVerifyFromHash
-		(param $big_hash i32) ;; 64 x i8
-		(param $nonce_point i32) ;; 32 x i8
-		(param $sig i32) ;; 32 x i8
-		(param $public_key i32) ;; 32 x i8
+		(param $big_hash i32) (param $_ i32) ;; 64 x i8
+		(param $nonce_point i32) (param $__ i32) ;; 32 x i8
+		(param $sig i32) (param $___ i32) ;; 32 x i8
+		(param $public_key i32) (param $____ i32) ;; 32 x i8
 		(result i32) ;; boolean
 		
 		(local $t i32) (local $p i32) (local $q i32) (local $x i32)
@@ -103,7 +103,7 @@
 	)
 	
 	(func $scalarbasePack
-		(param $nonce i32) ;; 32 x i8
+		(param $nonce i32) (param $_ i32) ;; 32 x i8
 		(result i32) ;; 32 x i8
 		
 		(local $nonce_point i32) (local $R i32)
@@ -116,9 +116,9 @@
 	)
 
 	(func $signPt2
-		(param $nonce i32) ;; 32 x i8
-		(param $secret_scalar i32) ;; 32 x i8
-		(param $big_hash i32) ;; 64 x i8
+		(param $nonce i32) (param $_ i32) ;; 32 x i8
+		(param $secret_scalar i32) (param $__ i32) ;; 32 x i8
+		(param $big_hash i32) (param $___ i32) ;; 64 x i8
 		(result i32) ;; 32 x i8
 
 		(local $i i32) (local $j i32) (local $ix i32) (local $k i32) (local $hi i64)

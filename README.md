@@ -10,7 +10,7 @@ The code is based on and tested against [tweetnacl.js](https://github.com/dchest
 
 Performance compared to `tweetnacl.js` on my laptop in Chromium 92 (via puppeteer). We are 3-5x faster in the warmed-up regime and 5-50x faster on cold start after page load.
 
-* __Our version__
+- **Our version**
 
 ```sh
 First run after page load (varies between runs!):
@@ -25,7 +25,8 @@ verify (short msg): 1.57 ± 0.23 ms
 sign (long msg):    1.48 ± 0.13 ms
 verify (long msg):  1.77 ± 0.13 ms
 ```
-* __tweetnacl.js__
+
+- **tweetnacl.js**
 
 ```sh
 First run after page load (varies between runs!):
@@ -47,9 +48,12 @@ verify (long msg):  10.87 ± 0.48 ms
 # before you do anything else
 yarn
 
+# build wasm (TODO: this should happen automatically again)
+npx watever ./src/wat/sign.wat
+
 # test and compare with tweetnacl.js
 node test/test.js
 
-# test and watch for changes
-npx chrodemon --wasm-wrap test/test-nacl-modified.js
+# test and watch for changes (TODO watching currently doesn't work)
+npx chrodemon test/test-nacl-modified.js
 ```

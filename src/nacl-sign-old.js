@@ -11,7 +11,7 @@ import {
   signPt2,
   signVerifyFromHash,
   signPublicKeyFromHash,
-} from './wat/sign.wat.js';
+} from './wat-old/sign.wat';
 // import {wrap} from './wrap-wasm-bytes-only.ts';
 import {concat} from './util.js';
 import {checkArrayTypes, randombytes} from './nacl-common.js';

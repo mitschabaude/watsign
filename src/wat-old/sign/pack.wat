@@ -1,6 +1,6 @@
 (module
-  (import "js" "console.log" (func $log (param i32)))
-  (import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
+  (import "window" "console.log" (func $log (param i32)))
+  (import "../../../node_modules/esbuild-plugin-wat/lib/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
 
   (import "../math25519.wat" "unpack" (func $unpack25519 (param i32 i32)))
 	(import "../math25519.wat" "par" (func $par25519 (param i32 i32)))

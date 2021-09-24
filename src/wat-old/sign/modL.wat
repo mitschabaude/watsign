@@ -1,5 +1,5 @@
 (module
-	(import "watever/glue.wat" "lift_bytes" (func $return_bytes (param i32) (param i32) (result i32)))
+	(import "../../../node_modules/esbuild-plugin-wat/lib/return.wat" "return_bytes" (func $return_bytes (param i32) (param i32) (result i32)))
   (import "../bytes_utils.wat" "i8_to_i64" (func $i8_to_i64 (param i32 i32 i32)))
 	(import "../bytes_utils.wat" "alloc_zero" (func $alloc_zero (param i32) (result i32)))
 
@@ -10,6 +10,7 @@
 
 	(func $reduce
 		(param $x i32) ;; 64 x i8, ~= sha512 output interpreted as integer 0 <= n < 2^512
+		(param $_xLength i32)
 		(result i32) ;; 32 x i8, ~= x mod L, where L < 2^256 is the EC group order
 
 		(local $X i32)

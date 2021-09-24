@@ -1,4 +1,4 @@
-import identity from './identity.json';
+import identity from './identity.js';
 import {toBase64, toBytes} from 'fast-base64';
 import {fromUrl, toUrl} from 'fast-base64/url';
 import {concat} from '../src/util.js';
@@ -49,7 +49,8 @@ export default async function printPerformance(
   if (signKeyPairFromSeed) {
     let seed = (await toBytes(fromUrl(identity.secretKey))).subarray(0, 32);
     let keys = await signKeyPairFromSeed(seed);
-    if (toUrl(await toBase64(keys.publicKey)) !== identity.publicKey) {
+    let base64Key = toUrl(await toBase64(keys.publicKey));
+    if (base64Key !== identity.publicKey) {
       console.error('keys not equal');
     }
   }

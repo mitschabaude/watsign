@@ -5,14 +5,15 @@
   "main": "src/index.js",
   "license": "MIT",
   "devDependencies": {
-    "fast-base64": "^0.1.6",
     "chrode": "^0.3.2",
     "compact-base64": "^2.1.2",
+    "fast-base64": "^0.1.6",
     "noble-ed25519": "^1.2.5",
     "simple-signed-records-engine": "0.1.2",
     "tweetnacl": "^1.0.3",
     "tweetnacl-util": "^0.15.1",
     "typescript": "^4.3.5",
-    "wabt": "^1.0.23"
+    "wabt": "^1.0.23",
+    "watever": "^0.1.0"
   }
 }

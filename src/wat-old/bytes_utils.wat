@@ -1,5 +1,5 @@
 (module
-  (import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
+  (import "../../node_modules/esbuild-plugin-wat/lib/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
 
   (export "zero" (func $zero))
   (export "alloc_zero" (func $alloc_zero))

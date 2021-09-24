@@ -9,7 +9,15 @@ import {checkArrayTypes} from './nacl-common.js';
 export {hashNative, hash};
 
 async function hashNative(msg) {
-  return new Uint8Array(await crypto.subtle.digest('SHA-512', msg));
+  // TODO get running in node without those awful runtime checks
+  if (typeof crypto === 'undefined') {
+    // let crypto = await import('node:crypto');
+    // let hash = new Uint8Array(crypto.createHash('sha512').update(msg).digest());
+    // // console.log(hash);
+    // return hash;
+  } else {
+    return new Uint8Array(await crypto.subtle.digest('SHA-512', msg));
+  }
 }
 
 function hash(msg) {
