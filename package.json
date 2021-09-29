@@ -30,7 +30,7 @@
     "test": "yarn build && npx chrode test/test-nacl-modified.js"
   },
   "dependencies": {
-    "watever": "^0.1.0"
+    "watever": "^0.2.1"
   },
   "devDependencies": {
     "chrode": "^0.3.2",

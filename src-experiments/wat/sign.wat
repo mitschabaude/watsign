@@ -1,7 +1,7 @@
 (module
 	(import "js" "console.log" (func $log (param i32)))
 	(import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
-	(import "watever/glue.wat" "lift_bytes" (func $return_bytes (param i32) (param i32) (result i32)))
+	(import "watever/glue.wat" "lift_raw_bytes" (func $return_bytes (param i32 i32) (result i32)))
 	(import "watever/glue.wat" "lift_bool" (func $return_bool (param i32) (result i32)))
 
 	(import "./sign/scalarmult.wat" "scalarbase" (func $scalarbase (param i32 i32)))
