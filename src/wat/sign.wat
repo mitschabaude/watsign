@@ -1,8 +1,21 @@
 (module
 	(import "js" "console.log" (func $log (param i32)))
+	(import "js" "s => {throw Error(s);}#lift" (func $throw (param i32)))
+	
+	(import "../util.js" "hashNative#lift" (func $hashNative (param i32) (result i32)))
+	(import "../util.js" "randomBytes" (func $randomBytes (param i32) (result i32)))
+
 	(import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
-	(import "watever/glue.wat" "lift_raw_bytes" (func $return_bytes (param i32 i32) (result i32)))
-	(import "watever/glue.wat" "lift_bool" (func $return_bool (param i32) (result i32)))
+	(import "watever/memory.wat" "get_length" (func $get_length (param i32) (result i32)))
+	(import "watever/glue.wat" "lift_string" (func $lift_string (param i32) (result i32)))
+	(import "watever/glue.wat" "lift_raw_bytes" (func $lift_raw_bytes (param i32 i32) (result i32)))
+	(import "watever/glue.wat" "lift_bytes" (func $lift_bytes (param i32) (result i32)))
+	(import "watever/glue.wat" "lift_bool" (func $lift_bool (param i32) (result i32)))
+	(import "watever/glue.wat" "lift_extern" (func $lift_extern (param i32) (result i32)))
+	(import "watever/glue.wat" "new_object" (func $new_object (param i32) (result i32)))
+  (import "watever/glue.wat" "add_entry" (func $add_entry (param i32)))
+	(import "watever/promise.wat" "then_3" (func $then_3 (param i32 i32 i32 i32 i32) (result i32)))
+	(import "watever/promise.wat" "then_1" (func $then_1 (param i32 i32 i32) (result i32)))
 
 	(import "./sign/scalarmult.wat" "scalarbase" (func $scalarbase (param i32 i32)))
 	(import "./sign/scalarmult.wat" "scalarmult" (func $scalarmult (param i32 i32 i32)))
@@ -16,15 +29,89 @@
 
 	(import "./bytes_utils.wat" "alloc_zero" (func $alloc_zero (param i32) (result i32)))
 	(import "./bytes_utils.wat" "zero" (func $zero (param i32 i32)))
+	(import "./bytes_utils.wat" "copy" (func $copy (param i32 i32 i32)))
 	(import "./bytes_utils.wat" "i8_to_i64" (func $i8_to_i64 (param i32 i32 i32)))
 
 	(export "scalarbasePack#lift" (func $scalarbasePack))
 	(export "signPt2#lift" (func $signPt2))
 	(export "reduce#lift" (func $reduce))
-	(export "signVerifyFromHash#lift" (func $signVerifyFromHash))
-	(export "signPublicKeyFromHash#lift" (func $signPublicKeyFromHash))
+	(export "verify#lift" (func $verify))
+	(export "newKeyPair#lift" (func $newKeyPair))
+	(export "keyPairFromSecretKey#lift" (func $keyPairFromSecretKey))
+	(export "keyPairFromSeed#lift" (func $keyPairFromSeed))
+	;; (export "signPublicKeyFromHash#lift" (func $publicKeyFromHash))
 
-	(func $signPublicKeyFromHash
+	;; strings for error messages and keyPair object, stored in pointer format with length encoded
+	(data (i32.const 896) "\0c\00\00\00bad key size") ;; 12
+	(global $BAD_KEY_SIZE i32 (i32.const 900))
+	(data (i32.const 912) "\12\00\00\00bad signature size") ;; 18
+	(global $BAD_SIG_SIZE i32 (i32.const 916))
+	(data (i32.const 934) "\0d\00\00\00bad seed size") ;; 13
+	(global $BAD_SEED_SIZE i32 (i32.const 938))
+	(data (i32.const 951) "\09\00\00\00publicKey") ;; 9
+	(global $PUBLIC_KEY i32 (i32.const 955))
+	(data (i32.const 964) "\09\00\00\00secretKey") ;; 9
+	(global $SECRET_KEY i32 (i32.const 968))
+
+	(table 2 funcref)
+	(export "table" (table 0))
+	(elem (i32.const 0) $verifyFromHash $keyPairFromHashAndSeed)
+
+	(func $newKeyPair (result i32)
+		(call $randomBytes (i32.const 32))
+		call $keyPairFromSeed
+	)
+
+	(func $keyPairFromSecretKey (param $secret_key i32) (result i32)
+		;; if (secretKey.length !== 64) throw new Error('bad key size');
+		(call $get_length (local.get $secret_key)) (i32.const 64) i32.ne
+		if (call $throw (call $lift_string (global.get $BAD_KEY_SIZE))) end
+
+		;; return {secretKey, publicKey: secretKey.subarray(32)}
+		(call $new_object (i32.const 2))
+		(call $add_entry (global.get $SECRET_KEY))
+		(call $lift_bytes (local.get $secret_key)) drop
+		(call $add_entry (global.get $PUBLIC_KEY))
+		(call $lift_raw_bytes (i32.add (local.get $secret_key) (i32.const 32)) (i32.const 32)) drop
+	)
+
+  ;; async function keyPairFromSeed(seed) {
+	(func $keyPairFromSeed (param $seed i32) (result i32)
+		(local $seed_lifted i32)
+		;; if (seed.length !== 32) throw new Error('bad seed size');
+		(call $get_length (local.get $seed)) (i32.const 32) i32.ne
+		if (call $throw (call $lift_string (global.get $BAD_SEED_SIZE))) end
+
+		;; let secretHash = await hashNative(secretKey.subarray(0, 32));
+		;; return keyPairFromHashAndSeed(secretHash, seed);
+		(local.tee $seed_lifted (call $lift_bytes (local.get $seed)))
+		call $hashNative
+		i32.const 1 ;; $keyPairFromHashAndSeed
+		local.get $seed_lifted
+		call $then_1
+		call $lift_extern
+	)
+
+	(func $keyPairFromHashAndSeed (param $secret_hash i32) (param $seed i32) (result i32)
+		(local $secret_key i32) (local $public_key i32)
+
+		;; let publicKey = publicKeyFromHash(secretHash); // only uses first 32 bytes of hash
+		(local.set $public_key (call $publicKeyFromHash (local.get $secret_hash)))
+
+		;; let secretKey = concat(seed, publicKey);
+		(local.set $secret_key (call $alloc (i32.const 64)))
+		(call $copy (local.get $secret_key) (local.get $seed) (i32.const 32))
+		(call $copy (i32.add (local.get $secret_key) (i32.const 32)) (local.get $public_key) (i32.const 32))
+
+		;; return {secretKey, publicKey}
+		(call $new_object (i32.const 2)) ;; returns pointer to object
+		(call $add_entry (global.get $SECRET_KEY))
+		(call $lift_bytes (local.get $secret_key)) drop
+		(call $add_entry (global.get $PUBLIC_KEY))
+		(call $lift_bytes (local.get $public_key)) drop
+	)
+
+	(func $publicKeyFromHash
 		(param $secret_scalar i32) ;; 32 x i8
 		(result i32)
 		(local $pk i32) (local $p i32)
@@ -46,27 +133,50 @@
 		;; let p = [gf(), gf(), gf(), gf()];
 		;; scalarbase(p, skHash);
 		;; pack(pk, p);
-		(local.set $p (call $alloc_zero (i32.const 544)))
-		(local.set $pk (i32.add (local.get $p) (i32.const 512)))
+		(local.set $p (call $alloc_zero (i32.const 512)))
+		(local.set $pk (call $alloc_zero (i32.const 32)))
 		(call $scalarbase (local.get $p) (local.get $secret_scalar))
 		(call $pack (local.get $pk) (local.get $p))
-		(call $return_bytes (local.get $pk) (i32.const 32))
 
-		;; ;; sk.set(pk, 32);
-		;; (local.set $i (i32.const 0))
-		;; (loop
-		;; 	(i32.load8_u (i32.add (local.get $pk) (local.get $i)))
-		;; 	call $log
-		;; 	local.get $sk
-		;; 	(i32.load8_u (i32.add (local.get $pk) (local.get $i)))
-		;; 	i32.store8 offset=32
-		;; 	(br_if 0 (i32.ne (i32.const 32)
-		;; 		(local.tee $i (i32.add (local.get $i) (i32.const 1)))
-		;; 	))
-		;; )
+		local.get $pk
+		;; (call $lift_raw_bytes (local.get $pk) (i32.const 32))
 	)
 
-	(func $signVerifyFromHash
+	(func $verify ;; message, signature, publicKey
+		(param $message i32) (param $signature i32) (param $public_key i32)
+		(result i32)
+
+		(local $msg_length i32)
+		(local $hashed i32)
+
+		;; if (signature.length !== 64) throw new Error('bad signature size');
+    ;; if (publicKey.length !== 32) throw new Error('bad public key size');
+		(call $get_length (local.get $public_key)) (i32.const 32) i32.ne
+		if (call $throw (call $lift_string (global.get $BAD_KEY_SIZE))) end
+		(call $get_length (local.get $signature)) (i32.const 64) i32.ne
+		if (call $throw (call $lift_string (global.get $BAD_SIG_SIZE))) end
+		
+		(local.set $msg_length (call $get_length (local.get $message)))
+
+		;; concat(signature.subarray(0, 32), publicKey, message)
+		(call $alloc (i32.add (i32.const 64) (local.get $msg_length)))
+		local.set $hashed 
+		(call $copy (local.get $hashed) (local.get $signature) (i32.const 32))
+		(call $copy (i32.add (local.get $hashed) (i32.const 32)) (local.get $public_key)  (i32.const 32))
+		(call $copy (i32.add (local.get $hashed) (i32.const 64)) (local.get $message) (local.get $msg_length))
+
+		;; let hash = await hashNative(hashed)
+		;; return verifyFromHash(hash, signature.subarray(0, 32), signature.subarray(32), publicKey)
+		(call $hashNative (call $lift_bytes (local.get $hashed)))
+		i32.const 0
+		(call $lift_raw_bytes (local.get $signature) (i32.const 32))
+		(call $lift_raw_bytes (i32.add (local.get $signature) (i32.const 32)) (i32.const 32))
+		(call $lift_bytes (local.get $public_key))
+		call $then_3
+		call $lift_extern
+	)
+
+	(func $verifyFromHash
 		(param $big_hash i32) ;; 64 x i8
 		(param $nonce_point i32) ;; 32 x i8
 		(param $sig i32) ;; 32 x i8
@@ -74,13 +184,14 @@
 		(result i32) ;; boolean
 		
 		(local $t i32) (local $p i32) (local $q i32) (local $x i32)
+
 		(local.set $t (call $alloc_zero (i32.const 1056))) ;; 32 + 2*512
 		(local.set $p (i32.add (local.get $t) (i32.const 32)))
 		(local.set $q (i32.add (local.get $p) (i32.const 512)))
 
 		;; if (unpackneg(q, publicKey)) return false;
 		(call $unpackneg (local.get $q) (local.get $public_key))
-		if (return (call $return_bool (i32.const 0))) end
+		if (return (call $lift_bool (i32.const 0))) end
 
 		;; big_hash = reduce(big_hash);
 		(call $i8_to_i64 (local.get $p) (local.get $big_hash) (i32.const 64))
@@ -98,8 +209,8 @@
 		;; if (crypto_verify_32(nonce_point, 0, t, 0)) return false;
 		;; return true;
 		(call $crypto_verify_32 (local.get $nonce_point) (i32.const 0) (local.get $t) (i32.const 0))
-		if (return (call $return_bool (i32.const 0))) end
-		(call $return_bool (i32.const 1))
+		if (return (call $lift_bool (i32.const 0))) end
+		(call $lift_bool (i32.const 1))
 	)
 	
 	(func $scalarbasePack
@@ -112,7 +223,7 @@
 
 		(call $scalarbase (local.get $nonce_point) (local.get $nonce))
 		(call $pack (local.get $R) (local.get $nonce_point))
-		(call $return_bytes (local.get $R) (i32.const 32))
+		(call $lift_raw_bytes (local.get $R) (i32.const 32))
 	)
 
 	(func $signPt2
@@ -180,6 +291,6 @@
 			))
 		)
 		(call $modL (local.get $S) (local.get $x))
-		(call $return_bytes (local.get $S) (i32.const 32))
+		(call $lift_raw_bytes (local.get $S) (i32.const 32))
 	)
 )

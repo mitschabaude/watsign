@@ -3,7 +3,8 @@
 
   (export "zero" (func $zero))
   (export "alloc_zero" (func $alloc_zero))
-  (export "i8_to_i64" (func $i8_to_i64))
+	(export "copy" (func $copy))
+	(export "i8_to_i64" (func $i8_to_i64))
 
 	(func $alloc_zero (param $length i32) (result i32)
 		(local $pointer i32)
@@ -21,6 +22,21 @@
 			(i32.store8 (local.get $I) (i32.const 0))
 			(br_if 0 (i32.ne (local.get $end)
 				(local.tee $I (i32.add (local.get $I) (i32.const 1)))
+			))
+		)
+	)
+
+	(func $copy (param $target i32) (param $source i32) (param $length i32)
+		(local $i i32)
+		(local.set $i (i32.const 0))
+		(loop
+			(i32.store8 (i32.add (local.get $i) (local.get $target))
+				(i32.load8_s
+					(i32.add (local.get $i) (local.get $source))
+				)
+			)
+			(br_if 0 (i32.ne (local.get $length)
+				(local.tee $i (i32.add (local.get $i) (i32.const 1)))
 			))
 		)
 	)
