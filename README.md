@@ -1,12 +1,12 @@
 # watsign
 
 This module a port of the signing part of [tweetnacl](http://tweetnacl.cr.yp.to/) to WebAssembly + JavaScript. It implements the [ed25519 signature scheme](https://en.wikipedia.org/wiki/EdDSA#Ed25519).
-The module works in all modern browsers as well as node and deno.
+watsign works in **all modern browsers** as well as **node** and **deno**!
 
 The code is based on and tested against [tweetnacl-js](https://github.com/dchest/tweetnacl-js). If you only need signing, watsign offers some advantages over tweetnacl-js:
 
-- 3-30x faster, see [comparison below](#performance)
-- Size impact is ~7.5kB (minified, gzipped) vs ~10.5kB for tweetnacl-js (which contains much more than signing, however!).
+- 3-50x faster, see [comparison below](#performance)
+- Size impact is ~7.5kB (minified, gzipped) vs ~10.5kB for tweetnacl-js (which contains much more than signing, however!)
 
 The code is mostly written in raw WAT (Webassembly text format) and bundled to JS-friendly Wasm with [watever](https://github.com/mitschabaude/watever), the WAT bundler written also by me.
 
