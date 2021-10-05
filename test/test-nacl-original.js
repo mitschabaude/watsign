@@ -3,7 +3,7 @@ import printPerformancePure from './printPerformancePure.js';
 
 async function main() {
   printPerformancePure(
-    'nacl-original',
+    'tweetnacl-js',
     nacl.sign.detached,
     nacl.sign.detached.verify,
     nacl.sign.keyPair.fromSeed

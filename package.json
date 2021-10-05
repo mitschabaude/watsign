@@ -17,10 +17,18 @@
     "cryptography",
     "signatures"
   ],
-  "main": "src/nacl-sign.js",
   "types": "index.d.ts",
   "exports": {
-    ".": "./src/nacl-sign.js"
+    ".": {
+      "node": "./src/nacl-sign.js",
+      "default": "./dist/nacl-sign.js"
+    }
+  },
+  "imports": {
+    "#crypto": {
+      "node": "./src/crypto.node.js",
+      "default": "./src/crypto.js"
+    }
   },
   "files": [
     "src"
@@ -29,16 +37,20 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "npx watever ./src/wat/sign.wat && npx watever ./src/wat/sign.wat --deno -o src/wat/sign.deno.wat.js",
-    "prepublishOnly": "yarn build",
-    "test": "yarn build && npx chrode test/test-nacl-modified.js"
+    "build": "npx watever ./src/wat/sign.wat && npx watever ./src/wat/sign.wat --deno -o src/wat/sign.deno.wat.js && node build.js",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && npx chrode test/test-nacl-modified.js",
+    "size": "npm run build && npx esbuild --bundle --minify dist/nacl-sign.js | gzip | wc -c"
   },
   "dependencies": {
     "watever-js-wrapper": "^0.1.1"
   },
   "devDependencies": {
+    "@types/node": "^16.10.2",
     "chrode": "^0.3.2",
     "compact-base64": "^2.1.2",
+    "esbuild": "^0.13.3",
+    "esbuild-plugin-import-map": "^2.1.0",
     "fast-base64": "^0.1.6",
     "noble-ed25519": "^1.2.5",
     "simple-signed-records-engine": "0.1.2",

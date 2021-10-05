@@ -1,9 +1,12 @@
 # watsign
 
 This module a port of the signing part of [tweetnacl](http://tweetnacl.cr.yp.to/) to WebAssembly + JavaScript. It implements the [ed25519 signature scheme](https://en.wikipedia.org/wiki/EdDSA#Ed25519).
-The module works in all modern browsers. Currently it doesn't work in node/deno but I plan to fix that.
+The module works in all modern browsers as well as node and deno.
 
-The code is based on and tested against [tweetnacl-js](https://github.com/dchest/tweetnacl-js), but is quite a lot faster. The size impact is about half of tweetnacl-js only for the signing part.
+The code is based on and tested against [tweetnacl-js](https://github.com/dchest/tweetnacl-js). If you only need signing, watsign offers some advantages over tweetnacl-js:
+
+- 3-30x faster, see [comparison below](#performance)
+- Size impact is ~7.5kB (minified, gzipped) vs ~10.5kB for tweetnacl-js (which contains much more than signing, however!).
 
 The code is mostly written in raw WAT (Webassembly text format) and bundled to JS-friendly Wasm with [watever](https://github.com/mitschabaude/watever), the WAT bundler written also by me.
 
@@ -26,6 +29,13 @@ let signature = await sign(message, secretKey);
 let ok = await verify(message, signature, publicKey);
 
 console.log('everything ok?', ok);
+```
+
+In deno, you can import from github:
+
+<!-- prettier-ignore -->
+```js
+import {newKeyPair, sign, verify} from 'https://raw.githubusercontent.com/mitschabaude/watsign/main/mod.ts';
 ```
 
 ## API
@@ -96,14 +106,11 @@ verify (long msg):  10.87 ± 0.48 ms
 
 ```sh
 # before you do anything else
-yarn
+npm install
 
-# build wasm
-npx watever ./src/wat/sign.wat
+# build wasm and separate entry-points for node / deno / browser
+npm run build
 
 # run performance comparison with tweetnacl-js
-node test/test.js
-
-# test and watch for changes (TODO watching currently doesn't work)
-npx chrodemon test/test-nacl-modified.js
+node test/performance.js
 ```

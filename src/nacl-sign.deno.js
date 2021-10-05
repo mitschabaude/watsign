@@ -6,7 +6,7 @@ import {
   newKeyPair,
   keyPairFromSecretKey,
   keyPairFromSeed,
-} from './wat/sign.wat.js';
+} from './wat/sign.deno.wat.js';
 import {hashNative} from '#crypto';
 import {concat, checkArrayTypes} from './util.js';
 

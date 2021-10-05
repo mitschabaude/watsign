@@ -2,8 +2,8 @@
 	(import "js" "console.log" (func $log (param i32)))
 	(import "js" "s => {throw Error(s);}#lift" (func $throw (param i32)))
 	
-	(import "../util.js" "hashNative#lift" (func $hashNative (param i32) (result i32)))
-	(import "../util.js" "randomBytes" (func $randomBytes (param i32) (result i32)))
+	(import "#crypto" "hashNative#lift" (func $hashNative (param i32) (result i32)))
+	(import "#crypto" "randomBytes" (func $randomBytes (param i32) (result i32)))
 
 	(import "watever/memory.wat" "alloc" (func $alloc (param i32) (result i32)))
 	(import "watever/memory.wat" "get_length" (func $get_length (param i32) (result i32)))

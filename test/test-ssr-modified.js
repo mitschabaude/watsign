@@ -2,7 +2,7 @@ import {
   naclSignVerify,
   naclSign,
   naclSignKeyPairFromSeed,
-} from '../src/nacl-sign.js';
+} from '../dist/nacl-sign.js';
 import {toBytes, toBase64} from 'fast-base64';
 import {fromUrl, toUrl} from 'fast-base64/url';
 import printPerformance from './printPerformance.js';

@@ -1,7 +1,7 @@
-import {sign, verify, keyPairFromSeed} from '../src/nacl-sign.js';
+import {sign, verify, keyPairFromSeed} from '../dist/nacl-sign.js';
 import printPerformancePure from './printPerformancePure.js';
 
 async function main() {
-  printPerformancePure('nacl-modified', sign, verify, keyPairFromSeed);
+  printPerformancePure('watsign', sign, verify, keyPairFromSeed);
 }
 main();
