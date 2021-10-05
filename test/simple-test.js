@@ -4,7 +4,7 @@ import {
   newKeyPair,
   sign,
   verify,
-} from '../src/nacl-sign.js';
+} from 'watsign';
 (async () => {
   let {publicKey, secretKey} = await newKeyPair();
   console.log('publicKey', publicKey);

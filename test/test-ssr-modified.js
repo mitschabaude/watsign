@@ -1,12 +1,12 @@
 import {
-  naclSignVerify,
-  naclSign,
-  naclSignKeyPairFromSeed,
-} from '../dist/nacl-sign.js';
+  verify as naclSignVerify,
+  sign as naclSign,
+  keyPairFromSeed as naclSignKeyPairFromSeed,
+} from '../dist/sign.wat.js';
 import {toBytes, toBase64} from 'fast-base64';
 import {fromUrl, toUrl} from 'fast-base64/url';
 import printPerformance from './printPerformance.js';
-import {concat} from '../src/util.js';
+import {concat} from '../src-experiments/util.js';
 
 // 4.5ms, 5.5ms
 async function main() {

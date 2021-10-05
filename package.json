@@ -20,8 +20,8 @@
   "types": "index.d.ts",
   "exports": {
     ".": {
-      "node": "./src/nacl-sign.js",
-      "default": "./dist/nacl-sign.js"
+      "node": "./src/sign.wat.js",
+      "default": "./dist/sign.wat.js"
     }
   },
   "imports": {
@@ -38,10 +38,10 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "npx watever ./src/wat/sign.wat && npx watever ./src/wat/sign.wat --deno -o src/wat/sign.deno.wat.js && node build.js",
+    "build": "npx watever ./src/sign.wat && npx watever ./src/sign.wat --deno -o src/sign.deno.wat.js && node build.js",
     "prepublishOnly": "npm run build",
     "test": "npm run build && npx chrode test/test-nacl-modified.js",
-    "size": "npm run build && npx esbuild --bundle --minify dist/nacl-sign.js | gzip | wc -c"
+    "size": "npm run build && npx esbuild --bundle --minify dist/sign.wat.js | gzip | wc -c"
   },
   "dependencies": {
     "watever-js-wrapper": "^0.1.1"

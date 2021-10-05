@@ -1,7 +1,7 @@
 import identity from './identity.js';
 import {toBase64, toBytes} from 'fast-base64';
 import {fromUrl, toUrl} from 'fast-base64/url';
-import {concat} from '../src/util.js';
+import {concat} from '../src-experiments/util.js';
 
 export default async function printPerformance(
   name,

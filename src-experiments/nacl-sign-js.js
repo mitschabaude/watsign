@@ -1,3 +1,5 @@
+// UNUSED version with a JS wrapper for sign()
+// this makes awaiting promises much simpler, and the code easier to follow
 import {
   scalarbasePack,
   reduce,
@@ -6,7 +8,7 @@ import {
   newKeyPair,
   keyPairFromSecretKey,
   keyPairFromSeed,
-} from './wat/sign.wat.js';
+} from '../src/wat/sign.wat.js';
 import {hashNative} from '#crypto';
 import {concat, checkArrayTypes} from './util.js';
 

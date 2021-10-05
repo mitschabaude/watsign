@@ -1,4 +1,4 @@
-import {sign, verify, keyPairFromSeed} from '../dist/nacl-sign.js';
+import {sign, verify, keyPairFromSeed} from '../dist/sign.wat.js';
 import printPerformancePure from './printPerformancePure.js';
 
 async function main() {
