@@ -31,7 +31,8 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "engines": {
     "node": ">=16"

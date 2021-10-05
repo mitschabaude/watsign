@@ -13,7 +13,7 @@ await esbuild.build({
 await esbuild.build({
   entryPoints: ['./src/nacl-sign.deno.js'],
   bundle: true,
-  outdir: 'dist',
+  outfile: 'mod.js',
   format: 'esm',
   plugins: [subpathImportsPlugin, externalPlugin],
 });
