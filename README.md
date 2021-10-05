@@ -31,11 +31,13 @@ let ok = await verify(message, signature, publicKey);
 console.log('everything ok?', ok);
 ```
 
+### deno
+
 In deno, you can import from github:
 
 <!-- prettier-ignore -->
 ```js
-import {newKeyPair, sign, verify} from 'https://raw.githubusercontent.com/mitschabaude/watsign/main/mod.ts';
+import {newKeyPair, sign, verify} from 'https://raw.githubusercontent.com/mitschabaude/watsign/main/mod.js';
 ```
 
 ## API
