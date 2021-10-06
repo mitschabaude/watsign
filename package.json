@@ -40,7 +40,7 @@
   "scripts": {
     "build": "npx watever ./src/sign.wat && npx watever ./src/sign.wat --deno -o src/sign.deno.wat.js && node build/build.js",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && npx chrode test/test-nacl-modified.js",
+    "test": "npm run build && npx chrode test/test-watsign.js",
     "size": "npm run build && npx esbuild --bundle --minify dist/sign.wat.js | gzip | wc -c"
   },
   "dependencies": {
