@@ -52,9 +52,9 @@
 			(i32.add (local.get $X) (i32.shl (local.get $i) (i32.const 3)))
 			;; byte to copy
 			(i32.add (local.get $i) (local.get $x))
-			i32.load8_u
+			i64.load8_u
 
-			i32.store8
+			i64.store
 			
 			(br_if 0 (i32.ne (local.get $xLength)
 				(local.tee $i (i32.add (local.get $i) (i32.const 1)))

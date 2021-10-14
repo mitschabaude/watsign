@@ -8,7 +8,7 @@ import {
   newKeyPair,
   keyPairFromSecretKey,
   keyPairFromSeed,
-} from '../src/wat/sign.wat.js';
+} from '../src/sign.wat.js';
 import {hashNative} from '#crypto';
 import {concat, checkArrayTypes} from './util.js';
 

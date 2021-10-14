@@ -1,5 +1,4 @@
 (module
-	(import "js" "console.log" (func $log (param i32)))
 	(import "js" "s => {throw Error(s);}#lift" (func $throw (param i32)))
 	
 	(import "#crypto" "hashNative#lift" (func $hashNative (param i32) (result i32)))
