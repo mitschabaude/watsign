@@ -1,7 +1,7 @@
 {
   "name": "watsign",
   "description": "Tweetnacl's ed25519 signatures, ported to WebAssembly for speed",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "license": "MIT",
   "author": "Gregor Mitscha-Baude <gregor.mitscha-baude@gmx.at>",
