@@ -26,7 +26,7 @@ export default async function perf(name, run) {
     times.push(end - start_);
   }
 
-  console_log('First run after page load (varies between runs!):');
+  console_log('First run after startup (varies between runs):');
   await run(start, stop);
   for (let key in runTimes) {
     console_log(

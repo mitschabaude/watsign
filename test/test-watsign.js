@@ -4,16 +4,12 @@ import {toBase64, toBytes} from 'fast-base64';
 import {fromUrl, toUrl} from 'fast-base64/url';
 import {createBytesToSign} from './helper.js';
 
-import {sign, verify, keyPairFromSeed} from '../dist/sign.wat.js';
+import {sign, verify, keyPairFromSeed} from '../src/sign.wat.js';
 
 let secretKey = await toBytes(fromUrl(identity.secretKey));
 let publicKey = await toBytes(fromUrl(identity.publicKey));
 let longMessage = await createBytesToSign(identity.info);
 let shortMessage = await createBytesToSign({});
-
-if (toUrl(await toBase64(publicKey)) !== identity.publicKey) {
-  console.error('keys not equal');
-}
 
 perf('watsign', async start => {
   let stop = start('sign (short msg)');

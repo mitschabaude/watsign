@@ -14,10 +14,6 @@ let publicKey = await toBytes(fromUrl(identity.publicKey));
 let longMessage = await createBytesToSign(identity.info);
 let shortMessage = await createBytesToSign({});
 
-if (toUrl(await toBase64(publicKey)) !== identity.publicKey) {
-  console.error('keys not equal');
-}
-
 perf('tweetnacl-js', async start => {
   let stop = start('sign (short msg)');
   let signature = sign(shortMessage, secretKey);

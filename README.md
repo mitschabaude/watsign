@@ -74,7 +74,7 @@ We are 4-6x faster than tweetnacl-js in the warmed-up regime and up to 33x faste
 - **watsign**
 
 ```sh
-First run after page load (varies between runs!):
+First run after startup (varies between runs!):
 sign (short msg):    2.99 ms
 verify (short msg):  1.81 ms
 sign (long msg):     1.32 ms
@@ -90,7 +90,7 @@ verify (long msg):   1.28 ± 0.02 ms
 - **tweetnacl-js**
 
 ```sh
-First run after page load (varies between runs!):
+First run after startup (varies between runs!):
 sign (short msg):    15.85 ms
 verify (short msg):  8.45 ms
 sign (long msg):     43.88 ms
@@ -106,7 +106,7 @@ verify (long msg):   7.21 ± 0.23 ms
 - **noble-ed25519**
 
 ```sh
-First run after page load (varies between runs!):
+First run after startup (varies between runs!):
 sign (short msg):    53.17 ms
 verify (short msg):  3.72 ms
 sign (long msg):     2.11 ms
