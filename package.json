@@ -1,7 +1,7 @@
 {
   "name": "watsign",
   "description": "Tweetnacl's ed25519 signatures, ported to WebAssembly for speed",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "license": "MIT",
   "author": "Gregor Mitscha-Baude <gregor.mitscha-baude@gmx.at>",
@@ -46,7 +46,7 @@
     "size": "npm run build && npx esbuild --bundle --minify dist/sign.wat.js | gzip | wc -c"
   },
   "dependencies": {
-    "watever-js-wrapper": "^0.1.1"
+    "watever-js-wrapper": "^0.3.2"
   },
   "devDependencies": {
     "@types/node": "^16.10.2",
@@ -55,6 +55,6 @@
     "fast-base64": "^0.1.6",
     "noble-ed25519": "^1.2.5",
     "tweetnacl": "^1.0.3",
-    "watever": "^0.3.2"
+    "watever": "^0.5.2"
   }
 }
