@@ -18,6 +18,7 @@
     "signatures"
   ],
   "types": "index.d.ts",
+  "main": "./dist/sign.wat.js",
   "exports": {
     ".": {
       "node": "./src/sign.wat.js",
