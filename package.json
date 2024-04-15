@@ -21,9 +21,9 @@
   "main": "./dist/sign.wat.js",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "node": "./src/sign.wat.js",
-      "default": "./dist/sign.wat.js",
-      "types": "./index.d.ts"
+      "default": "./dist/sign.wat.js"
     }
   },
   "imports": {
